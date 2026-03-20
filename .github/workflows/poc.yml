@@ -1,0 +1,34 @@
+name: Self-Hosted Runner PoC
+
+# Trigger on pull requests (example), you can also use workflow_dispatch
+on:
+  pull_request:
+
+jobs:
+  poc:
+    # Use your self-hosted runner labels
+    runs-on: 
+      - self-hosted
+      - ubuntu-ghcloud
+      - windows-ghcloud-128
+
+    steps:
+      # Step 1: Check runner environment
+      - name: Runner Info
+        run: |
+          echo "✅ Runner Name: $RUNNER_NAME"
+          echo "✅ Runner OS: $(uname -s)"
+          echo "✅ Runner Architecture: $(uname -m)"
+          echo "✅ Current User: $(whoami)"
+
+      # Step 2: Create a safe PoC file
+      - name: Create Proof File
+        run: |
+          touch /tmp/self_hosted_runner_poc.txt
+          echo "PoC executed successfully on self-hosted runner" > /tmp/self_hosted_runner_poc.txt
+          ls -l /tmp/self_hosted_runner_poc.txt
+
+      # Step 3: Print environment variables (optional, no secrets)
+      - name: Show Environment Variables
+        run: |
+          env | grep -i 'RUNNER\|GITHUB'
